@@ -1,7 +1,7 @@
 <% include ./../partials/header %>
- 
+
 <h1>Open Tickets</h1>
- 
+
 <table>
     <thead>
         <tr>
@@ -11,16 +11,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <ul>
             <% for(var i = 0; i < mainValues.length; i++) { %>
-                <td><%= mainValues[i]['name'] %></td>
-                <td><%= mainValues[i]['email'] %></td>
-                <td><%= mainValues[i]['subject'] %></td>
-                <td>
+                <li><%= mainValues[i] %></li>
+                <li>
                     <a href="/admin/ticket/1">Reply</a>
-                </td>
+                </li>
             <% } %>
-        </tr>
+        </ul>
     </tbody>
 </table>
 <% include ./../partials/footer %>

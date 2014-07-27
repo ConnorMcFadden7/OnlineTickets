@@ -1,6 +1,6 @@
 var express = require('express');
 var router  = express.Router();
-
+var MongoClient = require('mongodb').MongoClient;
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -22,10 +22,6 @@ router.post('/thankyou', function(req, res) {
     var subject = req.body.subject;
     var message = req.body.message;
 
-
-    // Retrieve the database
-    var MongoClient = require('mongodb').MongoClient;
-
     // Connect to database
     MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
     	// Ensure we have connected
@@ -36,13 +32,13 @@ router.post('/thankyou', function(req, res) {
     	}
     	// Create a collection to insert the tickets
     	var collection = db.collection('tickets');
-	    collection.insert({name:"name", email:"email", subject:"subject", message:"message"}, {w:1}, function(err, data) {
+        var ticketDocs = [{'name':name, 'email':email, 'subject':subject, 'message':message }];
+	    collection.insert(ticketDocs, {w:1}, function(err, data) {
 	    	// Check if the ticket has been inserted
 	    	if(err) {
 	    		console.log("There was a problem adding the information to the database.");
 	    	} else {
-	    		console.log("Added to database!");
-	    		
+	    		console.log("Added to database!" + name + " " + email);
 	    	}
 	    });
 	});

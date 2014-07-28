@@ -21,6 +21,7 @@ router.post('/thankyou', function(req, res) {
     var email = req.body.email;
     var subject = req.body.subject;
     var message = req.body.message;
+    open = "Open";
 
     // Connect to database
     MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
@@ -32,7 +33,7 @@ router.post('/thankyou', function(req, res) {
     	}
     	// Create a collection to insert the tickets
     	var collection = db.collection('tickets');
-        var ticketDocs = [{'name':name, 'email':email, 'subject':subject, 'message':message }];
+        var ticketDocs = [{'name':name, 'email':email, 'subject':subject, 'message':message, 'open':open }];
 	    collection.insert(ticketDocs, {w:1}, function(err, data) {
 	    	// Check if the ticket has been inserted
 	    	if(err) {
@@ -55,10 +56,12 @@ router.post('/opentickets', function(req, res) {
         }
         // Create a collection to query
         var collection = db.collection('tickets');
-        // Remove ticket from document
-        collection.remove({_id : new ObjectID(ticketId)}, function(err, doc) {});
+        // Update ticket to closed after the admin has replied
+        var closed = "Closed";
+        collection.update({_id : new ObjectID(ticketId)}, {$set:{open:closed}}, {w:1}, function(err, result) {});
+        //collection.remove({_id : new ObjectID(ticketId)}, function(err, result) {});
         // Query the collection
-        collection.find({}, function(err, cursor) {
+        collection.find({open : open}, function(err, cursor) {
  
             cursor.toArray(function(err, tickets) {
                 console.log(tickets);

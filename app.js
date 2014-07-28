@@ -13,6 +13,24 @@ var app = express();
 
 app.set('port', process.env.PORT || 3000);
 
+/* Authentication for admin */
+app.use('/admin', function(req, res, next) {
+    var auth;
+    if (req.headers.authorization) {
+      auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
+    }
+
+    /* Check the username and password matches */
+    if (!auth || auth[0] !== 'admin' || auth[1] !== 'testpassword') {
+        res.statusCode = 401;
+        res.setHeader('WWW-Authenticate', 'Basic realm="MyRealmName"');
+        res.end('Unauthorized');
+    } else {
+
+        next();
+    }
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

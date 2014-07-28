@@ -2,7 +2,7 @@ var express = require('express');
 var router  = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 ObjectID = require('mongodb').ObjectID;
- 
+
 /* Show all open tickets. */
 router.get('/', function(req, res) {
     MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
@@ -15,9 +15,9 @@ router.get('/', function(req, res) {
         }
         // Create a collection to query
         var collection = db.collection('tickets');
- 
-        // Query the collection
-        collection.find({}, function(err, cursor) {
+        var open = "Open";
+        // Query the collection for open tickets
+        collection.find({open : open}, function(err, cursor) {
  
             cursor.toArray(function(err, tickets) {
                 console.log(tickets);

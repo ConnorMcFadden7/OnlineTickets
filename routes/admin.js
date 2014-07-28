@@ -1,11 +1,12 @@
 var express = require('express');
 var router  = express.Router();
 var MongoClient = require('mongodb').MongoClient;
+ObjectID = require('mongodb').ObjectID;
  
 /* Show all open tickets. */
 router.get('/', function(req, res) {
     MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
- 
+    
         // Ensure we have connected
         if(err) {
                 console.log("Cannot connect to database");
@@ -18,41 +19,27 @@ router.get('/', function(req, res) {
         // Query the collection
         collection.find({}, function(err, cursor) {
  
-            cursor.toArray(function(err, array) {
-                res.render('admin/index', { mainValues : array });
-            });
- 
-            // Ensure the cursor isn't null
-            // if(cursor != null) {
-            //     if(err) {
-            //         console.log("There seem's to be a problem: " + err);
-            //     } else {
-            //         console.log(cursor.toArray(function(err, item){}));
-            //         // Pass the values to the table
-                   
-            //     }
-            // }            
-           
+            cursor.toArray(function(err, tickets) {
+                console.log(tickets);
+                res.render('admin/index', { mainValues : tickets });
+            });          
         });
     });
 });
  
-/* Process the submit of the user ticket */
-router.post('/', function(req, res) {
-    res.render('admin/index');
-});
- 
-router.post('/openTicket', function(req, res) {
-    res.render('admin/index');
-});
- 
+
 /* Show a single ticket */
 router.get('/ticket/:id', function(req, res) {
- 
+
+    
     // Get the ticket Id
+    console.log("Req: " + req.params.id);
     var ticketId = req.params.id;
+
+    console.log("Ticket id is: " + ticketId);
+
     MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
- 
+
         // Ensure we have connected
         if(err) {
             console.log("Cannot connect to database");
@@ -61,27 +48,18 @@ router.get('/ticket/:id', function(req, res) {
         }
         // Create a collection to query
         var collection = db.collection('tickets');
-   
- 
         // Query the collection
-        collection.find({}, function(err, cursor) {
-            cursor.each(function(err, item) {
- 
-                // Ensure the item isn't null
-                if(item != null) {
-                    if(err) {
-                        console.log("There seem's to be a problem: " + err);
-                    } else {
-                        console.log(item);
-                       
-                        // Pass the values to the table
-                        res.render('admin/ticket', { nameValue : item['name'], emailValue : item['email'], subjectValue : item['subject'], messageValue : item['message'] });
-                    }
-                }            
-            });
+
+        collection.findOne({_id : new ObjectID(ticketId)}, function(err, doc) {
+            if(err) {
+                console.log("There seems to be an error: " + err);
+            } else {
+                console.log("No error has been reported");
+                console.log(doc);
+                res.render('admin/ticket', { ticket : doc });
+            } 
         });
     });
- 
 });
  
 module.exports = router;

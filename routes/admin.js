@@ -34,7 +34,7 @@ router.get('/ticket/:id', function(req, res) {
     
     // Get the ticket Id
     console.log("Req: " + req.params.id);
-    var ticketId = req.params.id;
+    ticketId = req.params.id;
 
     console.log("Ticket id is: " + ticketId);
 
@@ -60,7 +60,7 @@ router.get('/ticket/:id', function(req, res) {
             } 
         });
 
-        collection.remove({_id : new ObjectID(ticketId)}, function(err, doc) {});
+        
     });
 });
 

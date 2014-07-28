@@ -55,7 +55,8 @@ router.post('/opentickets', function(req, res) {
         }
         // Create a collection to query
         var collection = db.collection('tickets');
-
+        // Remove ticket from document
+        collection.remove({_id : new ObjectID(ticketId)}, function(err, doc) {});
         // Query the collection
         collection.find({}, function(err, cursor) {
  

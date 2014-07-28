@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
         });
     });
 });
- 
+
 
 /* Show a single ticket */
 router.get('/ticket/:id', function(req, res) {
@@ -59,7 +59,10 @@ router.get('/ticket/:id', function(req, res) {
                 res.render('admin/ticket', { ticket : doc });
             } 
         });
+
+        collection.remove({_id : new ObjectID(ticketId)}, function(err, doc) {});
     });
 });
- 
+
+
 module.exports = router;

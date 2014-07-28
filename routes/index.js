@@ -43,5 +43,27 @@ router.post('/thankyou', function(req, res) {
 	    });
 	});
 });
+router.post('/opentickets', function(req, res) {
 
+    MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
+
+        // Ensure we have connected
+        if(err) {
+                console.log("Cannot connect to database");
+        } else {
+                console.log("Connected to database");
+        }
+        // Create a collection to query
+        var collection = db.collection('tickets');
+
+        // Query the collection
+        collection.find({}, function(err, cursor) {
+ 
+            cursor.toArray(function(err, tickets) {
+                console.log(tickets);
+                res.render('admin/index', { mainValues : tickets });
+            });          
+        });
+    });
+});
 module.exports = router;

@@ -2,26 +2,27 @@
  
 <h1>Open Tickets</h1>
  
-<table>
+<table align="center">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Subject</th>
+            <th align="left">Name</th>
+            <th align="left">Email</th>
+            <th align="left">Subject</th>
+            <th align="left">Status</th>
         </tr>
     </thead>
     <tbody>
-        <ul>
-            <% for(var i = 0; i < mainValues.length; i++) { %>
-                <li><%= mainValues[i]['name'] %></li>
-                <li><%= mainValues[i]['email'] %></li>
-                <li><%= mainValues[i]['subject'] %></li>
-                <li><%= mainValues[i]['open'] %></li>
-                <li>
-                    <a href="/admin/ticket/<%=  mainValues[i]['_id'] %>">Reply</a>
-                </li>
-            <% } %>
-        </ul>
+        <% for(var i = 0; i < mainValues.length; i++) { %>
+            <tr>
+            <td><%= mainValues[i]['name'] %></td>
+            <td><%= mainValues[i]['email'] %></td>
+            <td><%= mainValues[i]['subject'] %></td>
+            <td><%= mainValues[i]['open'] %></td>
+            <td>
+                <a href="/admin/ticket/<%=  mainValues[i]['_id'] %>">Reply</a>
+            </td>
+            <tr>
+        <% } %>   
     </tbody>
 </table>
 <% include ./../partials/footer %>

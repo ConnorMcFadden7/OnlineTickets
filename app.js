@@ -26,7 +26,6 @@ app.use('/admin', function(req, res, next) {
         res.setHeader('WWW-Authenticate', 'Basic realm="MyRealmName"');
         res.end('Unauthorized');
     } else {
-
         next();
     }
 });

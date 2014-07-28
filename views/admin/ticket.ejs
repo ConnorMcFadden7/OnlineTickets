@@ -1,10 +1,9 @@
 <% include ./../partials/header %>
 
 <h1>Reply to Ticket</h1>
-
 <form class="form-horizontal"  method="post" action="/opentickets">
     <div>
-        <label><b>Name</b></label>
+        <label align="left"><b>Name</b></label>
         <label name="name" required><%= ticket['name']%></label>
     </div>
     <div>
@@ -21,9 +20,7 @@
     </div>
     <div>
         <label><b>Reply</b></label>
-        <div class="col-sm-10">
-            <textarea class="form-control" cols="50" rows="6" placeholder="Enter reply..." name="reply" required></textarea>
-        </div>
+        <textarea align="right" class="form-control" cols="50" rows="6" placeholder="Enter reply..." name="reply" required></textarea>
     </div>
     <div>
         <div class="col-sm-offset-2 col-sm-10">
@@ -31,5 +28,4 @@
         </div>
     </div>
 </form>
-
 <% include ./../partials/footer %>

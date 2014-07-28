@@ -7,21 +7,25 @@ ObjectID = require('mongodb').ObjectID;
 router.get('/', function(req, res) {
     MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
     
-        // Ensure we have connected
-        if(err) {
-                console.log("Cannot connect to database");
+        // Ensure we have connected and the database isn't null
+        if(err || db == null) {
+            console.log("Cannot connect to database");
         } else {
-                console.log("Connected to database");
+            console.log("Connected to database");
         }
         // Create a collection to query
         var collection = db.collection('tickets');
         var open = "Open";
         // Query the collection for open tickets
         collection.find({open : open}, function(err, cursor) {
- 
+            // Convert the cursor to an array so we can access the collection documents
             cursor.toArray(function(err, tickets) {
-                console.log(tickets);
-                res.render('admin/index', { mainValues : tickets });
+                if(err || tickets == null) {
+                    console.log("Tickets is null")
+                } else {
+                    console.log(tickets);
+                    res.render('admin/index', { mainValues : tickets });
+                }    
             });          
         });
     });
@@ -31,7 +35,6 @@ router.get('/', function(req, res) {
 /* Show a single ticket */
 router.get('/ticket/:id', function(req, res) {
 
-    
     // Get the ticket Id
     console.log("Req: " + req.params.id);
     ticketId = req.params.id;
@@ -41,7 +44,7 @@ router.get('/ticket/:id', function(req, res) {
     MongoClient.connect("mongodb://localhost:27017/tickets", function(err, db) {
 
         // Ensure we have connected
-        if(err) {
+        if(err || db == null) {
             console.log("Cannot connect to database");
         } else {
             console.log("Connected to database");
@@ -50,17 +53,15 @@ router.get('/ticket/:id', function(req, res) {
         var collection = db.collection('tickets');
         // Query the collection
 
-        collection.findOne({_id : new ObjectID(ticketId)}, function(err, doc) {
-            if(err) {
-                console.log("There seems to be an error: " + err);
+        collection.findOne({_id : new ObjectID(ticketId)}, function(err, ticket) {
+            if(err || ticket == null) {
+                console.log("Ticket is null");
             } else {
                 console.log("No error has been reported");
-                console.log(doc);
-                res.render('admin/ticket', { ticket : doc });
+                console.log(ticket);
+                res.render('admin/ticket', { ticket : ticket });
             } 
-        });
-
-        
+        });        
     });
 });
 

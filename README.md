@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting started
 
 ## Installing Node.js
@@ -66,3 +67,9 @@ the staff can see all open tickets and reply to them.
 
 * You can create a free MongoDB by signing up at https://www.mongohq.com/. Alternatively you can install MongoDB locally to your machine.
 * You should use the mongodb node.js library to connect to the MongoDB database. An introduction to how to use this library can be found at  http://mongodb.github.io/node-mongodb-native/api-articles/nodekoarticle1.html
+=======
+OnlineTickets
+=============
+
+Backend tool to reply to user's tickets. Built in Node.JS and MongoDB.
+>>>>>>> d02ddba15fb06a847f8cb2cc5b4550bc8abc1e81
